@@ -1,0 +1,30 @@
+{
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [
+        "--ignore=W503,E203,E501,W292",
+        "--max-line-length=120"
+    ],
+    "python.linting.banditEnabled": true,
+    "python.linting.pycodestyleEnabled": false,
+    "python.linting.pydocstyleEnabled": false,
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length=120"
+    ],
+    "python.defaultInterpreterPath": "${workspaceRoot}\\venv\\Scripts\\python.exe",
+    "python.linting.enabled": true,
+    "python.terminal.activateEnvironment": true,
+    "python.terminal.activateEnvInCurrentTerminal": true,
+
+    "editor.renderWhitespace": "all",
+    "editor.rulers": [80, 120],
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.wrapTabs": true,
+    "cmake.configureOnOpen": false,
+    "python.testing.pytestArgs": [
+        "grenada-test"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+}
