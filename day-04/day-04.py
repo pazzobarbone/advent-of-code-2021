@@ -57,10 +57,10 @@ def calculate_answer(board_combinations, last_drawn_number):
     combination_length = len(board_combinations[0])
     unmarked_number_sum = 0
     last_number_drawn_idx = drawn_numbers.index(last_drawn_number)
-    extraction = drawn_numbers[: last_number_drawn_idx + 1]
+    draw = drawn_numbers[: last_number_drawn_idx + 1]
     for r in range(combination_length):
         for c in range(combination_length):
-            if not board_combinations[r][c] in extraction:
+            if not board_combinations[r][c] in draw:
                 unmarked_number_sum += board_combinations[r][c]
     print(unmarked_number_sum * last_drawn_number)
 
