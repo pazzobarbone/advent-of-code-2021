@@ -3,16 +3,11 @@ import numpy as np
 
 
 class Board:
-    def __init__(self, id, combinations):
-        self._id = id
+    def __init__(self, combinations):
         self._bingo = False
         self._combinations = np.array(combinations)
         self._score = [0] * len(combinations)
         self._combination_length = len(combinations[0])
-
-    @property
-    def id(self):
-        return self._id
 
     @property
     def bingo(self):
@@ -38,15 +33,13 @@ class Board:
 def create_board_list(lines):
     boards = list()
     combinations = list()
-    id = 1
     if lines[-1] != "\n":
         lines.append("\n")
     for line in lines:
         line = line.strip()
         if not line:
             if combinations:
-                boards.append(Board(id, combinations))
-                id += 1
+                boards.append(Board(combinations + list(map(list, zip(*combinations)))))
                 combinations = []
         else:
             combinations.append([int(i) for i in line.split()])
@@ -91,7 +84,7 @@ with open(this_file.parent / "input.txt") as file:
 draws = [int(i) for i in lines[0].strip().split(",")]
 lines.remove(lines[0])
 
-# boards = create_board_list(lines)
-# part1(boards, draws)
+boards = create_board_list(lines)
+part1(boards, draws)
 boards = create_board_list(lines)
 part2(boards, draws)
