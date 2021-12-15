@@ -1,7 +1,6 @@
-from os import pathsep
 from pathlib import Path
-import numpy as np
 from abc import abstractmethod
+from copy import deepcopy
 
 
 class State:
@@ -69,33 +68,49 @@ with open(this_file.parent / "input.txt") as file:
 template = line_parser.template
 rules = line_parser.rules
 
-iterations = 10
+# Transform the rules from XX -> Y to XX -> XY, YX
+for key in rules.keys():
+    insertion = rules[key]
+    rules[key] = [key[0] + insertion, insertion + key[1]]
+
+
+chain_pairs = dict([(base, 0) for base in rules.keys()])
+
+i = 0
+while (i + 1) < len(template):
+    section = template[i : i + 2]
+    chain_pairs[section] += 1
+    i += 1
+
+
+# Dictionary to count the occurrences of each element
 element_counter = {}
 
 
-def update_counter(template):
-    for e in template:
-        if e in element_counter:
-            element_counter[e] += 1
-        else:
-            element_counter[e] = 1
+def update_counter(element, occurrences):
+    if element in element_counter:
+        element_counter[element] += occurrences
+    else:
+        element_counter[element] = occurrences
 
 
-update_counter(template)
-step = 1
-while step < iterations + 1:
-    #print(step)
-    i = 0
-    new_template = ""
-    while (i + 1) < len(template):
-        new_template += template[i]
-        section = template[i : i + 2]
-        new_template += rules[section]
-        update_counter(rules[section])
-        i += 1
-    new_template += template[i]
-    template = new_template
-    #print(element_counter)
-    step += 1
+# Initialise the counter with the elements in the starting template
+for e in template:
+    update_counter(e, 1)
+
+
+iterations = 40
+for i in range(1, iterations + 1):
+    temp_chain_pairs = deepcopy(chain_pairs)
+    for key in chain_pairs.keys():
+        new_pairs = rules[key]
+        multiplicity = chain_pairs[key]
+        update_counter(new_pairs[0][1], multiplicity)
+        for p in new_pairs:
+            temp_chain_pairs[p] += multiplicity
+        temp_chain_pairs[key] -= multiplicity
+    chain_pairs = deepcopy(temp_chain_pairs)
+    if i == 10:
+        print(max(element_counter.values()) - min(element_counter.values()))
 
 print(max(element_counter.values()) - min(element_counter.values()))
